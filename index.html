@@ -1,184 +1,490 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>涨幅 · 实时看板</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>烽火地带 · 市场行情</title>
 
 <style>
+*{
+    box-sizing:border-box;
+}
+
 body{
-  margin:0;
-  background:#0b0f14;
-  color:#f5f7fa;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:#080b10;
+    color:#fff;
 }
-.wrap{
-  max-width:760px;
-  margin:auto;
-  padding:20px;
+
+.header{
+    padding:25px 18px 18px;
+    background:linear-gradient(135deg,#111923,#080b10);
+    border-bottom:1px solid #202832;
 }
+
 .title{
-  font-size:28px;
-  font-weight:800;
+    font-size:27px;
+    font-weight:800;
 }
-.sub{
-  color:#8b95a7;
-  font-size:13px;
-  margin-top:6px;
+
+.subtitle{
+    margin-top:6px;
+    color:#8d98a8;
+    font-size:13px;
 }
-.hero,.panel{
-  margin-top:16px;
-  padding:18px;
-  border:1px solid #202938;
-  border-radius:20px;
-  background:#121822;
+
+.status{
+    display:inline-block;
+    margin-top:12px;
+    padding:5px 10px;
+    border-radius:20px;
+    background:#102b1c;
+    color:#4cff91;
+    font-size:12px;
 }
-.heroNum{
-  font-size:48px;
-  font-weight:850;
-  color:#ff4d67;
+
+.search{
+    margin:15px 18px;
 }
-.row{
-  display:flex;
-  justify-content:space-between;
-  padding:13px;
-  border:1px solid #202938;
-  border-radius:14px;
-  background:#0f151d;
-  margin-top:8px;
+
+.search input{
+    width:100%;
+    padding:14px 16px;
+    border:1px solid #252e38;
+    border-radius:14px;
+    background:#11161d;
+    color:white;
+    outline:none;
+    font-size:15px;
 }
-.chg{
-  color:#ff4d67;
-  font-weight:800;
+
+.tabs{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    padding:0 18px 12px;
 }
-.bars{
-  height:150px;
-  display:flex;
-  align-items:flex-end;
-  gap:8px;
-  margin-top:12px;
+
+.tabs button{
+    white-space:nowrap;
+    border:0;
+    padding:8px 14px;
+    border-radius:20px;
+    background:#151b23;
+    color:#9da7b5;
 }
-.bar{
-  flex:1;
-  background:#ff4d67;
-  border-radius:8px 8px 3px 3px;
+
+.tabs button.active{
+    background:#e6a83c;
+    color:#111;
+    font-weight:bold;
 }
-.muted{
-  color:#8b95a7;
-  font-size:12px;
+
+.section{
+    padding:10px 18px;
 }
-.grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-  margin-top:14px;
+
+.section-title{
+    font-size:19px;
+    font-weight:800;
+    margin:10px 0 13px;
 }
-.stat{
-  padding:12px;
-  border:1px solid #202938;
-  border-radius:14px;
-  background:#111720;
+
+.rank{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:15px;
+    margin-bottom:9px;
+    background:linear-gradient(135deg,#141a22,#10151c);
+    border:1px solid #202833;
+    border-radius:15px;
 }
-.stat b{
-  display:block;
-  margin-top:4px;
-  font-size:18px;
+
+.rank-number{
+    width:28px;
+    font-size:18px;
+    font-weight:800;
+    color:#e6a83c;
 }
-@media(max-width:560px){
-  .heroNum{font-size:40px}
-  .grid{grid-template-columns:1fr}
+
+.rank-info{
+    flex:1;
+}
+
+.rank-name{
+    font-weight:700;
+}
+
+.rank-price{
+    margin-top:5px;
+    font-size:13px;
+    color:#8994a3;
+}
+
+.up{
+    color:#38e87b;
+    font-weight:800;
+}
+
+.down{
+    color:#ff5964;
+    font-weight:800;
+}
+
+.item{
+    display:flex;
+    align-items:center;
+    padding:15px 13px;
+    margin-bottom:8px;
+    background:#11161d;
+    border:1px solid #202833;
+    border-radius:14px;
+}
+
+.item-info{
+    flex:1;
+}
+
+.item-name{
+    font-weight:700;
+    font-size:15px;
+}
+
+.item-category{
+    margin-top:5px;
+    font-size:12px;
+    color:#778292;
+}
+
+.item-price{
+    text-align:right;
+    margin-left:10px;
+}
+
+.price{
+    font-size:16px;
+    font-weight:800;
+}
+
+.change{
+    margin-top:5px;
+    font-size:13px;
+}
+
+.update{
+    text-align:center;
+    color:#687483;
+    font-size:11px;
+    padding:20px;
+}
+
+footer{
+    text-align:center;
+    padding:30px;
+    color:#596372;
+    font-size:11px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="wrap">
-
-<div class="title">涨幅 · 实时看板</div>
-<div class="sub">更直观、更有冲击力的涨幅首页</div>
-
-<section class="hero">
-
-<div class="muted">今日综合涨幅</div>
-
-<div class="heroNum">+8.42%</div>
-
-<div class="muted">更新于刚刚 · 页面演示</div>
-
-<div class="grid">
-
-<div class="stat">
-<span class="muted">最高</span>
-<b>+12.68%</b>
+<div class="header">
+    <div class="title">烽火地带 · 市场行情</div>
+    <div class="subtitle">三角洲行动 · 实时价格监控</div>
+    <div class="status">● 行情监控中</div>
 </div>
 
-<div class="stat">
-<span class="muted">均值</span>
-<b>+6.31%</b>
+<div class="search">
+    <input id="search" placeholder="搜索物品，例如：酒店王子房">
 </div>
 
-<div class="stat">
-<span class="muted">上涨个数</span>
-<b>128</b>
+<div class="tabs">
+    <button class="active" onclick="filterItems('全部',this)">全部</button>
+    <button onclick="filterItems('钥匙',this)">钥匙</button>
+    <button onclick="filterItems('武器',this)">武器</button>
+    <button onclick="filterItems('弹药',this)">弹药</button>
+    <button onclick="filterItems('装备',this)">装备</button>
+    <button onclick="filterItems('收藏品',this)">收藏品</button>
 </div>
 
+<div class="section">
+
+<div class="section-title">
+    🔥 涨幅排行榜
 </div>
 
-</section>
+<div id="ranking"></div>
 
-<section class="panel">
+<div class="section-title">
+    📊 全部物品
+</div>
 
-<b>涨幅趋势</b>
-
-<div class="bars" id="bars"></div>
-
-</section>
-
-<section class="panel">
-
-<b>热门标的</b>
-
-<div id="list"></div>
-
-</section>
+<div id="items"></div>
 
 </div>
+
+<div class="update">
+    数据每分钟自动刷新
+</div>
+
+<footer>
+    烽火地带行情助手
+</footer>
 
 <script>
 
-[34,52,45,68,72,61,82,96].forEach(v=>{
+const data = [
 
-let e=document.createElement('div');
+{
+name:"酒店方片房",
+category:"钥匙",
+price:879900,
+change:62.5
+},
 
-e.className='bar';
+{
+name:"酒店王子房",
+category:"钥匙",
+price:1290000,
+change:60.0
+},
 
-e.style.height=v+'%';
+{
+name:"酒店黑桃房",
+category:"钥匙",
+price:1510000,
+change:38.5
+},
 
-document.getElementById('bars').appendChild(e);
+{
+name:"实验楼资料室",
+category:"钥匙",
+price:974700,
+change:35.3
+},
 
-});
+{
+name:"雷达侧门钥匙",
+category:"钥匙",
+price:240000,
+change:20.0
+},
 
-[
-['热门A','000001','+12.68%'],
-['热门B','000002','+10.24%'],
-['热门C','000003','+9.77%'],
-['热门D','000004','+8.91%']
-].forEach(([n,c,p])=>{
+{
+name:"设备领用室",
+category:"钥匙",
+price:303600,
+change:18.2
+},
 
-let e=document.createElement('div');
+{
+name:"西楼调控房",
+category:"钥匙",
+price:677400,
+change:15.4
+},
 
-e.className='row';
+{
+name:"实验楼办公室",
+category:"钥匙",
+price:579700,
+change:15.4
+},
 
-e.innerHTML=
-'<div><b>'+n+
-'</b><div class="muted">'+c+
-'</div></div><div class="chg">'+p+
-'</div>';
+{
+name:"雷达站控制室",
+category:"钥匙",
+price:621300,
+change:14.3
+},
 
-document.getElementById('list').appendChild(e);
+{
+name:"雷达站会议室",
+category:"钥匙",
+price:466800,
+change:11.8
+},
 
-});
+{
+name:"变电站宿舍",
+category:"钥匙",
+price:39900,
+change:11.8
+},
+
+{
+name:"旅店用餐间",
+category:"钥匙",
+price:1850000,
+change:11.1
+},
+
+{
+name:"老浴场贵宾室",
+category:"钥匙",
+price:1070000,
+change:10.0
+},
+
+{
+name:"反应堆总控核心",
+category:"钥匙",
+price:7540000,
+change:-2.6
+},
+
+{
+name:"三级监狱权限卡",
+category:"钥匙",
+price:5470000,
+change:-4.8
+},
+
+{
+name:"酒店国王房",
+category:"钥匙",
+price:4840000,
+change:-6.8
+}
+
+];
+
+let currentCategory="全部";
+
+function formatPrice(price){
+
+    if(price>=1000000){
+        return (price/1000000).toFixed(2)+"M";
+    }
+
+    if(price>=1000){
+        return (price/1000).toFixed(1)+"K";
+    }
+
+    return price.toLocaleString();
+}
+
+function renderRanking(){
+
+    const ranking=document.getElementById("ranking");
+
+    const top=[...data]
+        .filter(x=>x.change>0)
+        .sort((a,b)=>b.change-a.change)
+        .slice(0,10);
+
+    ranking.innerHTML=top.map((item,index)=>`
+
+        <div class="rank">
+
+            <div class="rank-number">
+                ${index+1}
+            </div>
+
+            <div class="rank-info">
+
+                <div class="rank-name">
+                    ${item.name}
+                </div>
+
+                <div class="rank-price">
+                    当前价格 ${formatPrice(item.price)}
+                </div>
+
+            </div>
+
+            <div class="up">
+                +${item.change.toFixed(1)}%
+            </div>
+
+        </div>
+
+    `).join("");
+}
+
+function renderItems(){
+
+    const container=document.getElementById("items");
+
+    const keyword=document
+        .getElementById("search")
+        .value
+        .toLowerCase();
+
+    const filtered=data.filter(item=>{
+
+        const categoryOK=
+            currentCategory==="全部" ||
+            item.category===currentCategory;
+
+        const searchOK=
+            item.name
+            .toLowerCase()
+            .includes(keyword);
+
+        return categoryOK && searchOK;
+
+    });
+
+    container.innerHTML=filtered.map(item=>`
+
+        <div class="item">
+
+            <div class="item-info">
+
+                <div class="item-name">
+                    ${item.name}
+                </div>
+
+                <div class="item-category">
+                    ${item.category}
+                </div>
+
+            </div>
+
+            <div class="item-price">
+
+                <div class="price">
+                    ${formatPrice(item.price)}
+                </div>
+
+                <div class="change ${item.change>=0?'up':'down'}">
+
+                    ${item.change>=0?'+':''}${item.change.toFixed(1)}%
+
+                </div>
+
+            </div>
+
+        </div>
+
+    `).join("");
+
+}
+
+function filterItems(category,button){
+
+    currentCategory=category;
+
+    document
+        .querySelectorAll(".tabs button")
+        .forEach(btn=>btn.classList.remove("active"));
+
+    button.classList.add("active");
+
+    renderItems();
+
+}
+
+document
+    .getElementById("search")
+    .addEventListener("input",renderItems);
+
+renderRanking();
+renderItems();
 
 </script>
 
