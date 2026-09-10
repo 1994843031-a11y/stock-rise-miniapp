@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>涨幅 · 实时看板</title>
+
+<style>
+body{
+  margin:0;
+  background:#0b0f14;
+  color:#f5f7fa;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+.wrap{
+  max-width:760px;
+  margin:auto;
+  padding:20px;
+}
+.title{
+  font-size:28px;
+  font-weight:800;
+}
+.sub{
+  color:#8b95a7;
+  font-size:13px;
+  margin-top:6px;
+}
+.hero,.panel{
+  margin-top:16px;
+  padding:18px;
+  border:1px solid #202938;
+  border-radius:20px;
+  background:#121822;
+}
+.heroNum{
+  font-size:48px;
+  font-weight:850;
+  color:#ff4d67;
+}
+.row{
+  display:flex;
+  justify-content:space-between;
+  padding:13px;
+  border:1px solid #202938;
+  border-radius:14px;
+  background:#0f151d;
+  margin-top:8px;
+}
+.chg{
+  color:#ff4d67;
+  font-weight:800;
+}
+.bars{
+  height:150px;
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+  margin-top:12px;
+}
+.bar{
+  flex:1;
+  background:#ff4d67;
+  border-radius:8px 8px 3px 3px;
+}
+.muted{
+  color:#8b95a7;
+  font-size:12px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:14px;
+}
+.stat{
+  padding:12px;
+  border:1px solid #202938;
+  border-radius:14px;
+  background:#111720;
+}
+.stat b{
+  display:block;
+  margin-top:4px;
+  font-size:18px;
+}
+@media(max-width:560px){
+  .heroNum{font-size:40px}
+  .grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+<div class="title">涨幅 · 实时看板</div>
+<div class="sub">更直观、更有冲击力的涨幅首页</div>
+
+<section class="hero">
+
+<div class="muted">今日综合涨幅</div>
+
+<div class="heroNum">+8.42%</div>
+
+<div class="muted">更新于刚刚 · 页面演示</div>
+
+<div class="grid">
+
+<div class="stat">
+<span class="muted">最高</span>
+<b>+12.68%</b>
+</div>
+
+<div class="stat">
+<span class="muted">均值</span>
+<b>+6.31%</b>
+</div>
+
+<div class="stat">
+<span class="muted">上涨个数</span>
+<b>128</b>
+</div>
+
+</div>
+
+</section>
+
+<section class="panel">
+
+<b>涨幅趋势</b>
+
+<div class="bars" id="bars"></div>
+
+</section>
+
+<section class="panel">
+
+<b>热门标的</b>
+
+<div id="list"></div>
+
+</section>
+
+</div>
+
+<script>
+
+[34,52,45,68,72,61,82,96].forEach(v=>{
+
+let e=document.createElement('div');
+
+e.className='bar';
+
+e.style.height=v+'%';
+
+document.getElementById('bars').appendChild(e);
+
+});
+
+[
+['热门A','000001','+12.68%'],
+['热门B','000002','+10.24%'],
+['热门C','000003','+9.77%'],
+['热门D','000004','+8.91%']
+].forEach(([n,c,p])=>{
+
+let e=document.createElement('div');
+
+e.className='row';
+
+e.innerHTML=
+'<div><b>'+n+
+'</b><div class="muted">'+c+
+'</div></div><div class="chg">'+p+
+'</div>';
+
+document.getElementById('list').appendChild(e);
+
+});
+
+</script>
+
+</body>
+</html>
